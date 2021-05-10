@@ -24,6 +24,10 @@
 		{
 			"Name": "Serena Wiliams",
 			"BMI": "22.1"
+		},
+		{
+			"Name": "Arnold Schwarzenegger",
+			"BMI": "30.8"
 		}
 	]
 }

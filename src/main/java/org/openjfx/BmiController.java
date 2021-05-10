@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 //import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,6 +19,7 @@ import java.io.IOException;
 //import java.net.URL;
 import java.text.DecimalFormat;
 //import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Comparator;
 //import java.util.Iterator;
 
@@ -30,6 +32,12 @@ public class BmiController {
 
     @FXML
     private TextField nev;
+
+    @FXML
+    private Text hasonlonev;
+
+    @FXML
+    private Text hasonlobmi;
 
     @FXML
     private TextField tomeg;
@@ -144,7 +152,6 @@ public class BmiController {
             e.printStackTrace();
         }
     }*/
-
     private void getInfoFromJSON() {
         //loadData();
         JSONParser parser = new JSONParser();
@@ -160,10 +167,11 @@ public class BmiController {
             String part4;
             String finalpart;
             double bmiSTAR;
-            double eredmeny;
+            double eredmeny = 0;
             for (JSONObject object : (Iterable<JSONObject>) lista) {
                 System.out.println(object);
             }
+            ArrayList<Double> numbers = new ArrayList<Double>();
             for (int i = 0; i < lista.toArray().length; i++) {
                 parts = lista.get(i).toString().split(",",-2);
                 part2 = parts[1];
@@ -172,19 +180,49 @@ public class BmiController {
                 part4 = part3.replaceAll("}","");
                 finalpart = part4.substring(1, part4.length()-1);
                 bmiSTAR = Double.parseDouble(finalpart);
-                eredmeny = bmiSTAR - bmi;
+                eredmeny = bmiSTAR;// - bmi;
                 System.out.println("Eredmény: "+ eredmeny);
+                numbers.add(eredmeny);
             }
-            lista.sort(new Comparator<JSONObject>() {
+            double distance = Math.abs(numbers.get(0) - bmi);
+            int idx = 0;
+            for (int i = 1 ; i < lista.toArray().length; i++) {
+                double idistance = Math.abs(numbers.get(i) - bmi);
+                if(idistance < distance){
+                    idx = i;
+                    distance = idistance;
+                }
+            }
+            double sor = numbers.get(idx);
+            System.out.println(sor);
+            Object nyerosor = lista.get(idx);
+            String[] spliteles = nyerosor.toString().split(",",-2);
+            String nyeronev = (spliteles[0].split(":",-2)[1]);
+            nyeronev = nyeronev.substring(1, nyeronev.length()-1);
+            String nyerobmi = (spliteles[1].split(":",2)[1]).replaceAll("}","");
+            nyerobmi = nyerobmi.substring(1, nyerobmi.length()-1);
+            System.out.println(nyeronev);
+            System.out.println(nyerobmi);
+            hasonlonev.setText(nyeronev);
+            hasonlobmi.setText(nyerobmi);
+
+            /*lista.sort(new Comparator<JShasonlobmiONObject>() {
                 private static final String kulcs = "BMI";
 
                 @Override
                 public int compare(JSONObject a, JSONObject b) {
                     String valA = "";
                     String valB = "";
+                    DecimalFormat df = new DecimalFormat("#.000");
                     try {
                         valA = (String) a.get(kulcs);
+                        /*double valAd = Double.parseDouble(valA);
+                        valAd = valAd - bmi;
+                        valA = String.valueOf(df.format(valAd));
                         valB = (String) b.get(kulcs);
+                        /*double valBd = Double.parseDouble(valA);
+                        valBd = valBd - bmi;
+                        valA = String.valueOf(df.format(valBd));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -193,8 +231,9 @@ public class BmiController {
             });
             for (int i = 0; i < lista.toArray().length; i++) {
                 sortedlista.add(lista.get(i));
-            }
+            }*/
             System.out.println(sortedlista);
+            //hasonlonev.setText(sortedlista.get(1).toString());
 
         } catch (FileNotFoundException e) {
             System.err.println("A fájl nem található!");
