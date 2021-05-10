@@ -172,9 +172,9 @@ public class BmiController {
             String finalpart;
             double bmiSTAR;
             double eredmeny = 0;
-            for (JSONObject object : (Iterable<JSONObject>) lista) {
+            /*for (JSONObject object : (Iterable<JSONObject>) lista) {
                 System.out.println(object);
-            }
+            }*/
             ArrayList<Double> numbers = new ArrayList<Double>();
             for (int i = 0; i < lista.toArray().length; i++) {
                 parts = lista.get(i).toString().split(",",-2);
@@ -185,7 +185,7 @@ public class BmiController {
                 finalpart = part4.substring(1, part4.length()-1);
                 bmiSTAR = Double.parseDouble(finalpart);
                 eredmeny = bmiSTAR;// - bmi;
-                System.out.println("Eredmény: "+ eredmeny);
+                //System.out.println("Eredmény: "+ eredmeny);
                 numbers.add(eredmeny);
             }
             double distance = Math.abs(numbers.get(0) - bmi);
@@ -198,15 +198,15 @@ public class BmiController {
                 }
             }
             double sor = numbers.get(idx);
-            System.out.println(sor);
+            //System.out.println(sor);
             Object nyerosor = lista.get(idx);
             String[] spliteles = nyerosor.toString().split(",",-2);
             String nyeronev = (spliteles[0].split(":",-2)[1]);
             nyeronev = nyeronev.substring(1, nyeronev.length()-1);
             String nyerobmi = (spliteles[1].split(":",2)[1]).replaceAll("}","");
             nyerobmi = nyerobmi.substring(1, nyerobmi.length()-1);
-            System.out.println(nyeronev);
-            System.out.println(nyerobmi);
+            //System.out.println(nyeronev);
+            //System.out.println(nyerobmi);
             hasonlonev.setText(nyeronev);
             hasonlobmi.setText(nyerobmi);
 
@@ -236,8 +236,8 @@ public class BmiController {
             for (int i = 0; i < lista.toArray().length; i++) {
                 sortedlista.add(lista.get(i));
             }*/
-            System.out.println(sortedlista);
-            //hasonlonev.setText(sortedlista.get(1).toString());
+
+            //System.out.println(sortedlista);
 
         } catch (FileNotFoundException e) {
             System.err.println("A fájl nem található!");
@@ -260,8 +260,9 @@ public class BmiController {
             Object obj = parser.parse(new FileReader("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"));
             JSONObject jsonObject = (JSONObject) obj;
             JSONArray lista = (JSONArray) jsonObject.get("adatok");
+            System.out.println("Lista mentéshez:" + lista);
             lista.add(Arrays.asList(user));
-            mapper.writeValue(new File("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"), lista);
+            //mapper.writeValue(new File("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"), lista);
             //writer.close();
         } catch (IOException | ParseException e) {
             e.printStackTrace();
