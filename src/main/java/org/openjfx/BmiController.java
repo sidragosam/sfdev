@@ -1,8 +1,9 @@
 package org.openjfx;
 
 //import javafx.event.ActionEvent;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
-//import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -11,16 +12,19 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+//import javafx.scene.control.Button;
 //import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 //import java.net.URISyntaxException;
 //import java.net.URL;
-import java.text.DecimalFormat;
 //import java.util.Collections;
-import java.util.ArrayList;
-import java.util.Comparator;
 //import java.util.Iterator;
 
 public class BmiController {
@@ -244,6 +248,23 @@ public class BmiController {
 
     }
     private void saveInfoToJSON(String name, double bmivalue){
-
+        try {
+            //BufferedWriter writer = Files.newBufferedWriter(Path.of("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"));
+            JSONObject user = new JSONObject();
+            //JSONArray adatok = new JSONArray();
+            user.put("Name", name);
+            user.put("BMI", bmivalue);
+            //adatok.addAll(Arrays.asList(user));
+            ObjectMapper mapper = new ObjectMapper();
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"));
+            JSONObject jsonObject = (JSONObject) obj;
+            JSONArray lista = (JSONArray) jsonObject.get("adatok");
+            lista.add(Arrays.asList(user));
+            mapper.writeValue(new File("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"), lista);
+            //writer.close();
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
     }
 }
