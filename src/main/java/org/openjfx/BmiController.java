@@ -115,7 +115,7 @@ public class BmiController {
             rectangle1111.setVisible(true);
         }
         getInfoFromJSON();
-        saveInfoToJSON(nev.getText(), bmi);
+        saveInfoToJSON(nev.getText(), String.valueOf(df.format(bmi)));
     }
 
     @FXML
@@ -247,10 +247,11 @@ public class BmiController {
         }
 
     }
-    private void saveInfoToJSON(String name, double bmivalue){
+    private void saveInfoToJSON(String name, String bmivalue){
         try {
             //BufferedWriter writer = Files.newBufferedWriter(Path.of("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"));
             JSONObject user = new JSONObject();
+            bmivalue = bmivalue.replaceAll(",", ".");
             //JSONArray adatok = new JSONArray();
             user.put("Name", name);
             user.put("BMI", bmivalue);
@@ -260,9 +261,10 @@ public class BmiController {
             Object obj = parser.parse(new FileReader("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"));
             JSONObject jsonObject = (JSONObject) obj;
             JSONArray lista = (JSONArray) jsonObject.get("adatok");
-            System.out.println("Lista mentéshez:" + lista);
-            lista.add(Arrays.asList(user));
-            //mapper.writeValue(new File("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"), lista);
+            //System.out.println("Lista mentéshez:" + lista);
+            lista.add(user);
+            //System.out.println(jsonObject);
+            mapper.writeValue(new File("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"), jsonObject);
             //writer.close();
         } catch (IOException | ParseException e) {
             e.printStackTrace();
