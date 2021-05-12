@@ -72,7 +72,7 @@ public class BmiController {
     private void szamitas() {
         double suly = Double.parseDouble(tomeg.getText());
         double meret = Double.parseDouble(magassag.getText());
-        bmi = suly / ((meret / 100) * (meret / 100));
+        bmi = szamitBMI(suly, meret);
         DecimalFormat df = new DecimalFormat("#.000");
         bmiertek.setText(String.valueOf(df.format(bmi)));
         if (bmi < 18.5) {
@@ -98,6 +98,12 @@ public class BmiController {
         }
         getInfoFromJSON();
         saveInfoToJSON(nev.getText(), String.valueOf(df.format(bmi)));
+    }
+
+    double szamitBMI(double suly, double meret){
+        double bmiS;
+        bmiS = suly / ((meret / 100) * (meret / 100));
+        return bmiS;
     }
 
     @FXML
