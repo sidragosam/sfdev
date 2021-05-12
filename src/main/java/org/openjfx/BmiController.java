@@ -1,7 +1,5 @@
 package org.openjfx;
 
-//import javafx.event.ActionEvent;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -13,23 +11,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-
-//import javafx.scene.control.Button;
-//import java.io.File;
-//import java.net.URISyntaxException;
-//import java.net.URL;
-//import java.util.Collections;
-//import java.util.Iterator;
 
 public class BmiController {
-    /*URL url = getClass().getResource("adatok.json");
-    private final File fajl = new File(url.toURI());*/
 
     @FXML
     private TextField magassag;
@@ -60,9 +45,6 @@ public class BmiController {
 
     @FXML
     private Rectangle rectangle1111;
-
-    /*@FXML
-    private Button gomb;*/
 
     public BmiController(){
     }
@@ -140,30 +122,13 @@ public class BmiController {
             return false;
         }
     }
-    /*private String sor;
-    private ArrayList<String> lista = new ArrayList<String>();
-    public void loadData(){
-        try {
-            Scanner s = new Scanner(fajl);
-            while(s.hasNextLine()){
-                sor = s.nextLine();
-                System.out.println(sor);
-            }
-            System.out.println(lista);
-            s.close();
-        } catch (FileNotFoundException e) {
-            System.err.println("Nincs ilyen fájl");
-            e.printStackTrace();
-        }
-    }*/
+
     private void getInfoFromJSON() {
-        //loadData();
         JSONParser parser = new JSONParser();
         try {
             Object obj = parser.parse(new FileReader("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"));
             JSONObject jsonObject = (JSONObject) obj;
             JSONArray lista = (JSONArray) jsonObject.get("adatok");
-            JSONArray sortedlista = new JSONArray();
             String[] parts;
             String part2;
             String[] parts2;
@@ -172,9 +137,6 @@ public class BmiController {
             String finalpart;
             double bmiSTAR;
             double eredmeny = 0;
-            /*for (JSONObject object : (Iterable<JSONObject>) lista) {
-                System.out.println(object);
-            }*/
             ArrayList<Double> numbers = new ArrayList<Double>();
             for (int i = 0; i < lista.toArray().length; i++) {
                 parts = lista.get(i).toString().split(",",-2);
@@ -185,7 +147,6 @@ public class BmiController {
                 finalpart = part4.substring(1, part4.length()-1);
                 bmiSTAR = Double.parseDouble(finalpart);
                 eredmeny = bmiSTAR;// - bmi;
-                //System.out.println("Eredmény: "+ eredmeny);
                 numbers.add(eredmeny);
             }
             double distance = Math.abs(numbers.get(0) - bmi);
@@ -197,48 +158,14 @@ public class BmiController {
                     distance = idistance;
                 }
             }
-            double sor = numbers.get(idx);
-            //System.out.println(sor);
             Object nyerosor = lista.get(idx);
             String[] spliteles = nyerosor.toString().split(",",-2);
             String nyeronev = (spliteles[0].split(":",-2)[1]);
             nyeronev = nyeronev.substring(1, nyeronev.length()-1);
             String nyerobmi = (spliteles[1].split(":",2)[1]).replaceAll("}","");
             nyerobmi = nyerobmi.substring(1, nyerobmi.length()-1);
-            //System.out.println(nyeronev);
-            //System.out.println(nyerobmi);
             hasonlonev.setText(nyeronev);
             hasonlobmi.setText(nyerobmi);
-
-            /*lista.sort(new Comparator<JShasonlobmiONObject>() {
-                private static final String kulcs = "BMI";
-
-                @Override
-                public int compare(JSONObject a, JSONObject b) {
-                    String valA = "";
-                    String valB = "";
-                    DecimalFormat df = new DecimalFormat("#.000");
-                    try {
-                        valA = (String) a.get(kulcs);
-                        /*double valAd = Double.parseDouble(valA);
-                        valAd = valAd - bmi;
-                        valA = String.valueOf(df.format(valAd));
-                        valB = (String) b.get(kulcs);
-                        /*double valBd = Double.parseDouble(valA);
-                        valBd = valBd - bmi;
-                        valA = String.valueOf(df.format(valBd));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return valA.compareTo(valB);
-                }
-            });
-            for (int i = 0; i < lista.toArray().length; i++) {
-                sortedlista.add(lista.get(i));
-            }*/
-
-            //System.out.println(sortedlista);
-
         } catch (FileNotFoundException e) {
             System.err.println("A fájl nem található!");
             e.printStackTrace();
@@ -249,23 +176,17 @@ public class BmiController {
     }
     private void saveInfoToJSON(String name, String bmivalue){
         try {
-            //BufferedWriter writer = Files.newBufferedWriter(Path.of("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"));
             JSONObject user = new JSONObject();
             bmivalue = bmivalue.replaceAll(",", ".");
-            //JSONArray adatok = new JSONArray();
             user.put("Name", name);
             user.put("BMI", bmivalue);
-            //adatok.addAll(Arrays.asList(user));
             ObjectMapper mapper = new ObjectMapper();
             JSONParser parser = new JSONParser();
             Object obj = parser.parse(new FileReader("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"));
             JSONObject jsonObject = (JSONObject) obj;
             JSONArray lista = (JSONArray) jsonObject.get("adatok");
-            //System.out.println("Lista mentéshez:" + lista);
             lista.add(user);
-            //System.out.println(jsonObject);
             mapper.writeValue(new File("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"), jsonObject);
-            //writer.close();
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
