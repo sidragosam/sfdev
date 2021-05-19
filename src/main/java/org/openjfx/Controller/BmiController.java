@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 
 public class BmiController {
-
+    /*
+     FXML adatok betöltése
+     */
     @FXML
     private TextField magassag;
 
@@ -47,6 +49,9 @@ public class BmiController {
 
     @FXML
     private void handleButtonAction() {
+        /*
+          Gombnyomás kezelése.
+          */
         if(nev.getText().trim().isEmpty()){
             nev.setPromptText("Írd be a neved!");
         }
@@ -64,10 +69,11 @@ public class BmiController {
             }
         }
     }
+
+    /**
+     * Számítás meghívása, valamint mentés és betöltés a JSON-be, illetve a JSON-ből.
+     */
     private void szamitas() {
-        /*double suly = Double.parseDouble(tomeg.getText());
-        double meret = Double.parseDouble(magassag.getText());
-        bmi = szamitBMI(suly, meret);*/
         org.openjfx.Model.BMICalc kalkulator = new BMICalc(Double.parseDouble(tomeg.getText()), Double.parseDouble(magassag.getText()));
         DecimalFormat df = new DecimalFormat("#.000");
         double bmi = kalkulator.szamitBMI();
@@ -100,11 +106,17 @@ public class BmiController {
         loader.saveInfoToJSON(nev.getText(), String.valueOf(df.format(bmi)));
     }
 
+    /**
+     * Link kezelése.
+     */
     @FXML
     private void handleLinkAction(){
         openWebpage();
     }
 
+    /**
+     * Az előre beírt weblap megnyitása
+     */
     private static void openWebpage(){
         try{
             new ProcessBuilder("x-www-browser", "http://a.igneczitibor.hu/skyLine/adatvedelem/adatvedelem.html").start();
@@ -113,6 +125,12 @@ public class BmiController {
         }
     }
 
+    /**
+     * Eldöntjük egy adott inputról, hogy szám-e
+     * @param input kiválasztott TextField
+     * @param message Beírt szöveg
+     * @return igaz, vagy hamis
+     */
     private boolean isInt(TextField input, String message){
         try{
             Integer.parseInt(input.getText());
@@ -122,73 +140,4 @@ public class BmiController {
             return false;
         }
     }
-
-    /*private void getInfoFromJSON() {
-        JSONParser parser = new JSONParser();
-        try {
-            Object obj = parser.parse(new FileReader("./src/main/resources/org/openjfx/adatok.json"));
-            JSONObject jsonObject = (JSONObject) obj;
-            JSONArray lista = (JSONArray) jsonObject.get("adatok");
-            String[] parts;
-            String part2;
-            String[] parts2;
-            String part3;
-            String part4;
-            String finalpart;
-            double bmiSTAR;
-            double eredmeny = 0;
-            ArrayList<Double> numbers = new ArrayList<Double>();
-            for (int i = 0; i < lista.toArray().length; i++) {
-                parts = lista.get(i).toString().split(",",-2);
-                part2 = parts[1];
-                parts2 = part2.split(":",2);
-                part3 = parts2[1];
-                part4 = part3.replaceAll("}","");
-                finalpart = part4.substring(1, part4.length()-1);
-                bmiSTAR = Double.parseDouble(finalpart);
-                eredmeny = bmiSTAR;// - bmi;
-                numbers.add(eredmeny);
-            }
-            double distance = Math.abs(numbers.get(0) - bmi);
-            int idx = 0;
-            for (int i = 1 ; i < lista.toArray().length; i++) {
-                double idistance = Math.abs(numbers.get(i) - bmi);
-                if(idistance < distance){
-                    idx = i;
-                    distance = idistance;
-                }
-            }
-            Object nyerosor = lista.get(idx);
-            String[] spliteles = nyerosor.toString().split(",",-2);
-            String nyeronev = (spliteles[0].split(":",-2)[1]);
-            nyeronev = nyeronev.substring(1, nyeronev.length()-1);
-            String nyerobmi = (spliteles[1].split(":",2)[1]).replaceAll("}","");
-            nyerobmi = nyerobmi.substring(1, nyerobmi.length()-1);
-            hasonlonev.setText(nyeronev);
-            hasonlobmi.setText(nyerobmi);
-        } catch (FileNotFoundException e) {
-            System.err.println("A fájl nem található!");
-            e.printStackTrace();
-        } catch (ParseException | IOException e) {
-            e.printStackTrace();
-        }
-
-    }*/
-/*    private void saveInfoToJSON(String name, String bmivalue){
-        try {
-            JSONObject user = new JSONObject();
-            bmivalue = bmivalue.replaceAll(",", ".");
-            user.put("Name", name);
-            user.put("BMI", bmivalue);
-            ObjectMapper mapper = new ObjectMapper();
-            JSONParser parser = new JSONParser();
-            Object obj = parser.parse(new FileReader("./src/main/resources/org/openjfx/adatok.json"));
-            JSONObject jsonObject = (JSONObject) obj;
-            JSONArray lista = (JSONArray) jsonObject.get("adatok");
-            lista.add(user);
-            mapper.writeValue(new File("./src/main/resources/org/openjfx/adatok.json"), jsonObject);
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
-    }*/
 }

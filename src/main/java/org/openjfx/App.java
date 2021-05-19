@@ -12,6 +12,11 @@ public class App extends Application {
 
     private static Scene scene;
 
+    /**
+     * BMI Kalkulátor "színpad felállítása"
+     * @param stage színpad
+     * @throws IOException kivétel
+     */
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("bmi"), 640, 400);
@@ -22,6 +27,12 @@ public class App extends Application {
         
     }
 
+    /**
+     * FXML fájl betöltése
+     * @param fxml betölteni kívánt FXML neve
+     * @return fxmlLoader.load();
+     * @throws IOException kivétel
+     */
 /*    static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }

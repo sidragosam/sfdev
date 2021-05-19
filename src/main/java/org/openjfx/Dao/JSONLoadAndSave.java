@@ -16,6 +16,11 @@ public class JSONLoadAndSave {
     public JSONLoadAndSave() {
     }
 
+    /**
+     * Információk betöltése a JSON fájlból, bejövő BMI összehasonlítása a JSON-ben található értékekkel.
+     * @param bmi összehasonlítani kívánt BMI
+     * @return leghasonlóbb BMI értékekkel rendelkező Neve és BMI értéke
+     */
     public String[] getInfoFromJSON(double bmi) {
         JSONParser parser = new JSONParser();
         try {
@@ -69,6 +74,11 @@ public class JSONLoadAndSave {
         return new String[0];
     }
 
+    /**
+     * Adat elmentése az előre megadott JSON fájlba.
+     * @param name menteni kívánt Név
+     * @param bmivalue menteni kívánt BMI érték
+     */
     public void saveInfoToJSON(String name, String bmivalue){
         try {
             JSONObject user = new JSONObject();
