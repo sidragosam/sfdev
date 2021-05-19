@@ -1,5 +1,6 @@
 package org.openjfx.Test;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openjfx.Model.BMICalc;
@@ -12,6 +13,11 @@ class BMICalcTest {
     @BeforeEach
     void setup(){
         undertest = new BMICalc(68, 170);
+    }
+
+    @AfterEach
+    void tearDown(){
+        undertest = null;
     }
 
     @Test
