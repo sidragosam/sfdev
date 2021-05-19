@@ -6,6 +6,6 @@ module org.openjfx {
     requires json.simple;
     requires org.junit.jupiter.api;
 
-    opens org.openjfx to javafx.fxml;
+    opens org.openjfx.Controller to javafx.fxml;
     exports org.openjfx;
 }

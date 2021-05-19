@@ -1,18 +1,14 @@
-package org.openjfx;
+package org.openjfx.Controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.openjfx.Dao.JSONLoadAndSave;
+import org.openjfx.Model.BMICalc;
 
-import java.io.*;
+import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 public class BmiController {
 
@@ -68,12 +64,13 @@ public class BmiController {
             }
         }
     }
-    double bmi;
     private void szamitas() {
-        double suly = Double.parseDouble(tomeg.getText());
+        /*double suly = Double.parseDouble(tomeg.getText());
         double meret = Double.parseDouble(magassag.getText());
-        bmi = szamitBMI(suly, meret);
+        bmi = szamitBMI(suly, meret);*/
+        org.openjfx.Model.BMICalc kalkulator = new BMICalc(Double.parseDouble(tomeg.getText()), Double.parseDouble(magassag.getText()));
         DecimalFormat df = new DecimalFormat("#.000");
+        double bmi = kalkulator.szamitBMI();
         bmiertek.setText(String.valueOf(df.format(bmi)));
         if (bmi < 18.5) {
             rectangle1.setVisible(true);
@@ -96,14 +93,11 @@ public class BmiController {
             rectangle111.setVisible(false);
             rectangle1111.setVisible(true);
         }
-        getInfoFromJSON();
-        saveInfoToJSON(nev.getText(), String.valueOf(df.format(bmi)));
-    }
-
-    double szamitBMI(double suly, double meret){
-        double bmiS;
-        bmiS = suly / ((meret / 100) * (meret / 100));
-        return bmiS;
+        org.openjfx.Dao.JSONLoadAndSave loader = new JSONLoadAndSave();
+        String[] nyertesek = loader.getInfoFromJSON(bmi);
+        hasonlonev.setText(nyertesek[0]);
+        hasonlobmi.setText(nyertesek[1]);
+        loader.saveInfoToJSON(nev.getText(), String.valueOf(df.format(bmi)));
     }
 
     @FXML
@@ -129,10 +123,10 @@ public class BmiController {
         }
     }
 
-    private void getInfoFromJSON() {
+    /*private void getInfoFromJSON() {
         JSONParser parser = new JSONParser();
         try {
-            Object obj = parser.parse(new FileReader("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"));
+            Object obj = parser.parse(new FileReader("./src/main/resources/org/openjfx/adatok.json"));
             JSONObject jsonObject = (JSONObject) obj;
             JSONArray lista = (JSONArray) jsonObject.get("adatok");
             String[] parts;
@@ -179,8 +173,8 @@ public class BmiController {
             e.printStackTrace();
         }
 
-    }
-    private void saveInfoToJSON(String name, String bmivalue){
+    }*/
+/*    private void saveInfoToJSON(String name, String bmivalue){
         try {
             JSONObject user = new JSONObject();
             bmivalue = bmivalue.replaceAll(",", ".");
@@ -188,13 +182,13 @@ public class BmiController {
             user.put("BMI", bmivalue);
             ObjectMapper mapper = new ObjectMapper();
             JSONParser parser = new JSONParser();
-            Object obj = parser.parse(new FileReader("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"));
+            Object obj = parser.parse(new FileReader("./src/main/resources/org/openjfx/adatok.json"));
             JSONObject jsonObject = (JSONObject) obj;
             JSONArray lista = (JSONArray) jsonObject.get("adatok");
             lista.add(user);
-            mapper.writeValue(new File("/home/skyline/Asztal/BMI Final/src/main/resources/org/openjfx/adatok.json"), jsonObject);
+            mapper.writeValue(new File("./src/main/resources/org/openjfx/adatok.json"), jsonObject);
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }
