@@ -55,11 +55,11 @@ public class BmiController {
         if(nev.getText().trim().isEmpty()){
             nev.setPromptText("Írd be a neved!");
         }
-        if(tomeg.getText().trim().isEmpty() || !isInt(tomeg, tomeg.getText())){
+        if(tomeg.getText().trim().isEmpty() || !isInt(tomeg, tomeg.getText()) || Integer.parseInt(tomeg.getText()) <= 0){
             tomeg.setPromptText("Írd be a súlyod!");
             tomeg.setText("");
         }
-        if(magassag.getText().trim().isEmpty() || !isInt(magassag, magassag.getText())){
+        if(magassag.getText().trim().isEmpty() || !isInt(magassag, magassag.getText()) || Integer.parseInt(magassag.getText()) <= 0){
             magassag.setPromptText("Írd be a magasságod!");
             magassag.setText("");
         }

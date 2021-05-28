@@ -52,7 +52,12 @@ public class BMICalc {
      */
     public double szamitBMI(){
         double bmiS;
-        bmiS = this.suly / ((this.magassag / 100) * (this.magassag / 100));
-        return bmiS;
+        if(this.magassag > 0 && this.suly > 0) {
+            bmiS = this.suly / ((this.magassag / 100) * (this.magassag / 100));
+            return bmiS;
+        }else{
+            System.err.println("A magasságnak, vagy a súlynak nagyobbnak kell lennie 0-nál!");
+            return 0;
+        }
     }
 }
